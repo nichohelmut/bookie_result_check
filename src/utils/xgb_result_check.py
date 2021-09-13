@@ -1,6 +1,6 @@
 import google.auth
 
-from helper import read_bigquery, write
+from .helper import read_bigquery, write
 
 
 class ResultCheck:
