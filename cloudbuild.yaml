@@ -23,5 +23,5 @@ steps:
 timeout: '1600s'
 artifacts:
   objects:
-    location: '$_ARTIFACT_STORE/data-import'
+    location: '$_ARTIFACT_STORE/data-result-check'
     paths: ['src/*.py']
