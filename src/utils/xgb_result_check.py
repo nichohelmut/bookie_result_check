@@ -1,4 +1,5 @@
 import google.auth
+from google.cloud import storage
 
 from .helper import read_bigquery, write
 
@@ -25,6 +26,12 @@ class ResultCheck:
                 df_last_completed.at[index, 'real_result'] = 1
         return df_last_completed.reset_index(drop=True)
 
+    def save_to_storage(self, df):
+        client = storage.Client()
+        bucket = client.get_bucket('xgb_next_games_pred')
+
+        bucket.blob('xgb_result_check.csv').upload_from_string(df.to_csv(index=False), 'text/csv')
+
     def possible_win(self):
         df = self.actual_results()
 
@@ -39,4 +46,6 @@ class ResultCheck:
 
         df['predicted_results'] = self.predicted_results['predicted_result']
         write(df, self.project_id, 'statistics', 'xgb_result_check', self.credentials)
+        self.save_to_storage(df[['date_GMT', 'status', 'home_team_name', 'away_team_name', 'real_result',
+                                 'possible_win', 'predicted_results']])
         return df
