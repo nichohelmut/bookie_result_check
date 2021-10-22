@@ -1,3 +1,5 @@
+import datetime
+
 import google.auth
 from google.cloud import storage
 
@@ -30,7 +32,8 @@ class ResultCheck:
         client = storage.Client()
         bucket = client.get_bucket('xgb_next_games_pred')
 
-        bucket.blob('xgb_result_check.csv').upload_from_string(df.to_csv(index=False), 'text/csv')
+        bucket.blob(f'xgb_result_check{datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")}.csv').upload_from_string(
+            df.to_csv(index=False), 'text/csv')
 
     def possible_win(self):
         df = self.actual_results()
