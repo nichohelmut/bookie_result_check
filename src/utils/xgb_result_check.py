@@ -49,6 +49,8 @@ class ResultCheck:
 
         df['predicted_results'] = self.predicted_results['predicted_result']
         write(df, self.project_id, 'statistics', 'xgb_result_check', self.credentials)
+        print(df[['date_GMT', 'status', 'home_team_name', 'away_team_name', 'real_result',
+                                 'possible_win', 'predicted_results']])
         self.save_to_storage(df[['date_GMT', 'status', 'home_team_name', 'away_team_name', 'real_result',
                                  'possible_win', 'predicted_results']])
         return df
